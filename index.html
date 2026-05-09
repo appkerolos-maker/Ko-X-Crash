@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crash Mobile Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-card">
+      <h2>MelCrash</h2>
+      <p>سجل دخولك أو أنشئ حساب جديد</p>
+
+      <div class="auth-tabs">
+        <button id="authLoginTab" class="auth-tab active">تسجيل دخول</button>
+        <button id="authRegisterTab" class="auth-tab">إنشاء حساب</button>
+      </div>
+
+      <button id="oneClickCreateBtn" class="quick-create-btn" type="button">إنشاء حساب بنقرة واحدة</button>
+
+      <div id="oneClickBox" class="one-click-box hidden">
+        <div class="one-click-title">تحقق سريع قبل إنشاء الحساب</div>
+        <div class="captcha-row">
+          <span id="oneClickCaptchaQ" class="captcha-q">3 + 5 = ؟</span>
+          <button id="oneClickRefreshCaptcha" class="captcha-refresh" type="button">تحديث</button>
+        </div>
+        <input id="oneClickCaptchaA" class="captcha-input" type="number" placeholder="اكتب ناتج الكابتشا" />
+        <label class="age-check">
+          <input id="oneClickAgeOk" type="checkbox" />
+          <span>أؤكد أن عمري 18 سنة أو أكثر</span>
+        </label>
+        <button id="oneClickConfirmBtn" class="auth-btn" type="button">تأكيد وإنشاء الحساب</button>
+      </div>
+
+      <div id="oneClickResultBox" class="one-click-result hidden">
+        <div class="one-click-title">بيانات الحساب الجديد</div>
+        <ul class="cred-list">
+          <li>اسم المستخدم: <strong id="oneClickResultUser"></strong></li>
+          <li>كلمة المرور: <strong id="oneClickResultPass"></strong></li>
+        </ul>
+        <div class="one-click-actions">
+          <button id="oneClickCopyBtn" class="auth-btn" type="button">نسخ البيانات</button>
+          <button id="oneClickLoginNowBtn" class="auth-btn" type="button">دخول الآن</button>
+        </div>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>اسم المستخدم</label>
+        <input id="loginUser" type="text" required />
+        <label>كلمة المرور</label>
+        <input id="loginPass" type="password" required />
+        <button type="submit" class="auth-btn">دخول</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <label>اسم المستخدم</label>
+        <input id="regUser" type="text" required />
+        <label>كلمة المرور</label>
+        <input id="regPass" type="password" required />
+        <label>تأكيد كلمة المرور</label>
+        <input id="regPass2" type="password" required />
+        <button type="submit" class="auth-btn">إنشاء الحساب</button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+    </div>
+  </div>
+
+  <div id="depositOverlay" class="auth-overlay hidden">
+    <div class="deposit-phone" style="height: auto; max-height: 90vh; overflow-y: auto; border-radius: 14px;">
+      <header class="deposit-header">
+        <button id="depositBackBtn" class="deposit-back">رجوع</button>
+        <div class="deposit-title">الإيداع والسحب</div>
+        <div style="width:60px"></div>
+      </header>
+
+      <div class="withdraw-tabs">
+        <button class="tab active" data-tab="deposit">إيداع</button>
+        <button class="tab" data-tab="withdraw">سحب</button>
+        <button class="tab" data-tab="transactions">العمليات</button>
+      </div>
+
+      <section class="deposit-section" id="depositSection">
+        <div class="deposit-card">
+          <div class="deposit-label">اسم المستخدم</div>
+          <input id="depositUsername" class="deposit-input" type="text" readonly />
+
+          <div class="deposit-label">اختر مبلغ الإيداع</div>
+          <input id="depositAmount" class="deposit-input" type="number" min="1" step="1" value="100" />
+
+          <div class="deposit-grid">
+            <button class="deposit-quick" data-deposit-amount="50">50</button>
+            <button class="deposit-quick" data-deposit-amount="100">100</button>
+            <button class="deposit-quick" data-deposit-amount="200">200</button>
+            <button class="deposit-quick" data-deposit-amount="500">500</button>
+            <button class="deposit-quick" data-deposit-amount="1000">1000</button>
+            <button class="deposit-quick" data-deposit-amount="5000">5000</button>
+          </div>
+
+          <div class="deposit-label" style="margin-top: 10px;">رقم الهاتف الذي حولت منه</div>
+          <input id="senderNumber" class="deposit-input" type="tel" placeholder="اكتب رقم المحول" />
+
+          <div class="deposit-label" style="margin-top: 10px;">رقم التحويل المستلم</div>
+          <input id="receiverNumber" class="deposit-input" type="text" value="01214823170" readonly />
+
+          <div class="deposit-label" style="margin-top: 10px;">ارفع سكرين التحويل</div>
+          <input id="transferShot" class="deposit-input" type="file" accept="image/*" style="padding: 7px 10px; height: auto;" />
+        </div>
+
+        <button id="depositSubmit" class="deposit-submit">تأكيد الإيداع</button>
+        <p id="depositNote" class="deposit-note">املأ البيانات وارفع صورة التحويل ثم اضغط تأكيد</p>
+      </section>
+
+      <section class="withdraw-section hidden" id="withdrawSection">
+        <div class="deposit-card">
+          <div class="deposit-label">اسم المستخدم</div>
+          <input id="withdrawUsername" class="deposit-input" type="text" readonly />
+
+          <div class="deposit-label" style="margin-top: 10px;">مبلغ السحب</div>
+          <input id="withdrawAmount" class="deposit-input" type="number" min="1" step="1" value="100" />
+
+          <div class="deposit-grid">
+            <button class="deposit-quick" data-withdraw-amount="50">50</button>
+            <button class="deposit-quick" data-withdraw-amount="100">100</button>
+            <button class="deposit-quick" data-withdraw-amount="200">200</button>
+            <button class="deposit-quick" data-withdraw-amount="500">500</button>
+            <button class="deposit-quick" data-withdraw-amount="1000">1000</button>
+            <button class="deposit-quick" data-withdraw-amount="5000">5000</button>
+          </div>
+
+          <div class="deposit-label" style="margin-top: 10px;">رقم الهاتف (استقبال الفلوس)</div>
+          <input id="withdrawPhoneNumber" class="deposit-input" type="tel" placeholder="ادخل رقم الهاتف" />
+        </div>
+
+        <button id="withdrawSubmit" class="deposit-submit">تقديم طلب السحب</button>
+        <p id="withdrawNote" class="deposit-note">ادخل المبلغ ورقم الهاتف ثم اضغط تقديم</p>
+      </section>
+
+      <section class="transactions-section hidden" id="transactionsSection" style="padding: 15px;">
+        <div class="deposit-card" style="padding: 10px; background: rgba(0,0,0,0.2);">
+          <div class="deposit-label" style="margin-bottom: 10px;">آخر العمليات</div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; color: #fff; font-size: 13px;">
+              <thead>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #b8c6f8;">
+                  <th style="padding: 8px; text-align: right;">النوع</th>
+                  <th style="padding: 8px; text-align: right;">المبلغ</th>
+                  <th style="padding: 8px; text-align: right;">الحالة</th>
+                  <th style="padding: 8px; text-align: right;">التاريخ</th>
+                </tr>
+              </thead>
+              <tbody id="playerTransactionsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="successModal" class="auth-overlay hidden">
+    <div class="auth-card" style="text-align: center; padding: 30px;">
+      <div style="font-size: 50px; color: #8dffa7; margin-bottom: 10px;">✓</div>
+      <h2 id="successTitle" style="color: #fff; margin-bottom: 10px;">تم بنجاح!</h2>
+      <p id="successMessage" style="color: #b8c6f8; font-size: 14px; margin-bottom: 20px;">تم تقديم الطلب بنجاح</p>
+      <button id="successOkBtn" class="auth-btn" style="width: 100%;">حسناً</button>
+    </div>
+  </div>
+
+  <main class="phone">
+    <header class="topbar">
+      <button id="adminBtn" class="icon-btn" aria-label="menu">☰</button>
+      <div class="balance-pill"><button id="depositBtn" class="balance-dot balance-add-btn" aria-label="deposit">+</button> ج.م <strong id="balance">15.87</strong></div>
+      <button class="icon-btn logout" id="logoutBtn" aria-label="logout">تسجيل خروج</button>
+    </header>
+
+    <section class="tabs">
+      <button class="tab">السجل</button>
+      <button class="tab active">الأحكام والشروط</button>
+    </section>
+
+    <section class="chart-panel" id="multiplierWrap">
+      <div class="chart-grid"></div>
+      <svg class="curve" viewBox="0 0 300 142" preserveAspectRatio="none">
+        <path id="curveShadow" d="M0 141 C 50 138, 90 126, 140 92 C 180 66, 220 42, 300 8"></path>
+        <path id="curvePath" d="M0 141 C 50 138, 90 126, 140 92 C 180 66, 220 42, 300 8"></path>
+      </svg>
+      <div class="plane" id="plane" aria-hidden="true">
+        <canvas id="planeCanvas" class="plane-canvas" width="220" height="120"></canvas>
+        <img id="planeRaw" src="assets/images/plane-edited.png" alt="" hidden />
+      </div>
+      <div id="explosion" class="explosion" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="state-strip">
+        <span id="roundState">في انتظار الجولة</span>
+        <span id="roundTimer">3.0s</span>
+      </div>
+      <div class="multiplier" id="multiplier">1.00x</div>
+    </section>
+
+    <section class="bet-panel">
+      <div class="switch-row">
+        <button class="ghost" disabled>دخول آلي</button>
+        <div class="mode-label">محدد الرهان</div>
+      </div>
+
+      <label class="field-label" for="betAmount">الرهان</label>
+      <input id="betAmount" class="bet-input" type="number" min="10" step="1" value="20" />
+
+      <div class="quick-grid">
+        <button class="quick" data-amount="10">10</button>
+        <button class="quick" data-amount="50">50</button>
+        <button class="quick" data-amount="100">100</button>
+        <button class="quick" data-amount="500">500</button>
+        <button class="quick" data-amount="1000">1000</button>
+        <button class="quick" data-amount="5000">5000</button>
+        <button class="quick danger" id="clearBtn">×</button>
+      </div>
+
+      <label class="field-label" for="autoCashout">الخروج التلقائي</label>
+      <input id="autoCashout" class="bet-input" type="number" min="1.01" step="0.01" placeholder="مثال: 2.00" />
+
+      <div class="actions">
+        <button id="cashoutBtn" class="action action-left" disabled>التقاط المكاسب</button>
+        <button id="betBtn" class="action action-right">وضع الرهان</button>
+      </div>
+
+      <p id="message" class="message">اكتب قيمة الرهان واضغط وضع الرهان قبل بداية الجولة.</p>
+    </section>
+
+    <section class="stats">
+      <div>
+        <span>عدد اللاعبين</span>
+        <strong id="playersStat">15382</strong>
+        <em>ج.م</em>
+      </div>
+      <div>
+        <span>الدورات</span>
+        <strong id="roundsStat">207226.93</strong>
+        <em>ج.م</em>
+      </div>
+      <div>
+        <span>مجموع الجوائز</span>
+        <strong id="prizeStat">353908.33</strong>
+        <em>ج.م</em>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-user">اسم المستخدم</th>
+            <th class="th-multi">المعرف</th>
+            <th class="th-bet">الرهان</th>
+            <th class="th-profit">الأرباح</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./firebase-sync.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
